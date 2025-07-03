@@ -25,7 +25,7 @@ services:
       - "--entrypoints.websecure.http.tls=true"
 
       # Attach the static configuration tls.yaml file that contains the tls configuration settings
-      - "--providers.file.filename=/dynamic/tls.yaml"
+      # - "--providers.file.filename=/dynamic/tls.yaml"
 
       # Providers
       - "--providers.docker=true"
@@ -41,15 +41,15 @@ services:
       - "--accesslog=true"
       - "--metrics.prometheus=true"
 
+      # Optionally make 'le' the default resolver for TLS-enabled routers
+      - "--entrypoints.websecure.http.tls.certresolver=le"
+
       # Let's Encrypt resolver
       - "--certificatesresolvers.le.acme.email=tech@hectorzurga.com"
       - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json" # Path inside container volume
       - "--certificatesresolvers.le.acme.httpchallenge.entrypoint=web"
 
       # - "--certificatesresolvers.le.acme.dnschallenge.provider=your-dns-provider" # Needs provider setup
-
-      # Optionally make 'le' the default resolver for TLS-enabled routers
-      - "--entrypoints.websecure.http.tls.certresolver=le"
 
     # Traefik Dynamic configuration via Docker labels
     labels:
