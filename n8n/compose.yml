@@ -2,12 +2,12 @@ services:
   n8n:
     image: docker.n8n.io/n8nio/n8n
     labels:
-      - traefik.enable=true
-      - traefik.http.routers.n8n.rule=Host(`${DOMAIN_NAME}`)
-      - traefik.http.services.n8n.loadbalancer.server.port=${PORT}
-      - traefik.http.routers.n8n.tls=true
-      - traefik.http.routers.n8n.entrypoints=websecure
-      - traefik.http.routers.n8n.tls.certresolver=le
+      - "traefik.enable=true"
+      - "traefik.http.routers.n8n.rule=Host(`${DOMAIN_NAME}`)"
+      - "traefik.http.services.n8n.loadbalancer.server.port=${PORT}"
+      - "traefik.http.routers.n8n.tls=true"
+      - "traefik.http.routers.n8n.entrypoints=websecure"
+      - "traefik.http.routers.n8n.tls.certresolver=le"
 
     environment:
       - N8N_HOST=${DOMAIN_NAME}
