@@ -19,3 +19,10 @@ services:
       - WEBHOOK_URL=https://${DOMAIN_NAME}
     volumes:
       - ${DATA_FOLDER}/.n8n:/home/node/.n8n
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    name: proxy
+    external: true
