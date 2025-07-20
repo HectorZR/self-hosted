@@ -1,7 +1,7 @@
 services:
   traefik:
     image: traefik:v3.4.3
-    restart: unless-stopped
+    restart: always
     security_opt:
       - no-new-privileges:true
     networks:
@@ -9,7 +9,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-      - "8080:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./certs:/certs:ro
@@ -23,9 +22,6 @@ services:
       - "--entrypoints.web.http.redirections.entrypoint.permanent=true"
       - "--entrypoints.websecure.address=:443"
       - "--entrypoints.websecure.http.tls=true"
-
-      # Attach the static configuration tls.yaml file that contains the tls configuration settings
-      # - "--providers.file.filename=/dynamic/tls.yaml"
 
       # Providers
       - "--providers.docker=true"
@@ -45,11 +41,10 @@ services:
       - "--entrypoints.websecure.http.tls.certresolver=le"
 
       # Let's Encrypt resolver
+      - --certificatesresolvers.le.acme.httpchallenge=true
       - "--certificatesresolvers.le.acme.email=tech@hectorzurga.com"
       - "--certificatesresolvers.le.acme.storage=/letsencrypt/acme.json" # Path inside container volume
       - "--certificatesresolvers.le.acme.httpchallenge.entrypoint=web"
-
-      # - "--certificatesresolvers.le.acme.dnschallenge.provider=your-dns-provider" # Needs provider setup
 
     # Traefik Dynamic configuration via Docker labels
     labels:
