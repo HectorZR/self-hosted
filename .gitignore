@@ -2,3 +2,4 @@ certs
 .env
 letsencrypt
 !letsencrypt/.gitkeep
+.DS_Store
