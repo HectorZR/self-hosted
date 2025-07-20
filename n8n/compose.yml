@@ -1,9 +1,17 @@
 services:
+  n8n-init:
+    image: alpine:latest
+    command: |
+      sh -c "
+        chown -R 1000:1000 /data &&
+        chmod -R 755 /data
+      "
+    volumes:
+      - ${DATA_FOLDER}/.n8n:/data
   n8n:
     image: docker.n8n.io/n8nio/n8n
     restart: unless-stopped
-    ports:
-      - ${PORT}
+    user: "1000:1000"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.n8n.rule=Host(`${DOMAIN_NAME}`)"
