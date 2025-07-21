@@ -26,3 +26,7 @@ services:
       - "traefik.http.routers.edge.tls.certresolver=le"
 volumes:
   portainer_data:
+
+networks:
+  proxy:
+    name: proxy
