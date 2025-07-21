@@ -4,6 +4,8 @@ services:
     container_name: portainer
     command: -H unix:///var/run/docker.sock
     restart: always
+    networks:
+      - proxy
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
@@ -30,3 +32,4 @@ volumes:
 networks:
   proxy:
     name: proxy
+    external: true
