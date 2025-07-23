@@ -30,6 +30,21 @@ services:
       - ${DATA_FOLDER}/.n8n:/home/node/.n8n
     networks:
       - proxy
+      - default
+
+  mailpit:
+    image: axllent/mailpit
+    container_name: mailpit
+    restart: unless-stopped
+    volumes:
+      - ./data:/data
+    networks:
+      - default
+    environment:
+      MP_MAX_MESSAGES: 20
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
 
 networks:
   proxy:
