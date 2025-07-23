@@ -24,6 +24,10 @@ services:
       - N8N_HOST=${DOMAIN_NAME}
       - N8N_PORT=${PORT}
       - N8N_PROTOCOL=https
+      - N8N_SMTP_HOST=${SMTP_HOST}
+      - N8N_SMTP_PORT=${SMTP_PORT}
+      - N8N_SMTP_USER=${SMTP_USER}
+      - N8N_SMTP_PASS=${SMTP_PASS}
       - NODE_ENV=production
       - WEBHOOK_URL=https://${DOMAIN_NAME}
     volumes:
