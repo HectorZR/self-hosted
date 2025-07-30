@@ -1,0 +1,46 @@
+services:
+  ghost:
+    image: ghost:5-alpine
+    restart: always
+    environment:
+      # see https://ghost.org/docs/config/#configuration-options
+      database__client: ${DB_CLIENT}
+      database__connection__host: ${DB_HOST}
+      database__connection__user: ${DB_USER}
+      database__connection__password: ${MYSQL_ROOT_PASSWORD}
+      database__connection__database: ${DB_NAME}
+      # this url value is just an example, and is likely wrong for your environment!
+      # url: http://localhost:8080
+      # contrary to the default mentioned in the linked documentation, this image defaults to NODE_ENV=production (so development mode needs to be explicitly specified if desired)
+      #NODE_ENV: development
+    volumes:
+      - ghost:/var/lib/ghost/content
+    networks:
+      - default
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ghost.rule=Host(`blog.${HOST}`)"
+      - "traefik.http.services.ghost.loadbalancer.server.port=${PORT}"
+      - "traefik.http.routers.ghost.tls=true"
+      - "traefik.http.routers.ghost.entrypoints=websecure"
+      - "traefik.http.routers.ghost.tls.certresolver=le"
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      - ${MYSQL_ROOT_PASSWORD}
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - default
+
+volumes:
+  ghost:
+  db:
+
+networks:
+  proxy:
+    name: proxy
+    external: true
